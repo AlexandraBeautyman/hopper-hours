@@ -6,6 +6,9 @@
 // Input: 'Tact Coa'
 // Output: true
 
+
+// The below solution is O(n), where n is the length of the string.
+
 function palindromePermutation(str) {
     let charObj = {}
     let count = 0
@@ -38,4 +41,3 @@ console.log(palindromePermutation('ab C'))
 console.log(palindromePermutation('aBcbc $*'))
 console.log(palindromePermutation('  aB^cbc $*'))
 console.log(palindromePermutation('Tact Coa'))
-
