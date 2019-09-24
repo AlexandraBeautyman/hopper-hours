@@ -9,6 +9,58 @@
 // pale, bale => true
 // pale, bake => false
 
+function existsReplacement(str1, str2) {
+    let difference = 0
+    let length = Math.ceil((str1.length + str2.length) / 2)
+    for (let i = 0; i < length; i++) {
+        if (!str1[i] || !str2[i]) {
+            difference++
+        }
+        else if (str1[i] !== str2[i]) {
+            difference++
+        }
+    }
+    return (difference < 2)
+}
+
+function existsInsertion(longer, shorter) {
+    let difference = 0
+    for (let i = 0; i < shorter.length; i++) {
+        if (longer[i + difference] !== shorter[i]) {
+            difference++
+            if (difference > 1) return false
+        }
+    }
+    return true
+}
+
+function oneAway(str1, str2) {
+    if (Math.abs(str1.length - str2.length) > 1) {
+        return false
+    }
+    let replace = existsReplacement(str1, str2)
+    let insert = false
+    if (str1.length > str2.length) {
+        insert = existsInsertion(str1, str2)
+    }
+    else if (str1.length < str2.length) {
+        insert = existsInsertion(str2, str1)
+    }
+    return (replace || insert)
+}
+
+console.log(oneAway('pale', 'ple')) // true
+console.log(oneAway('pales', 'pale')) // true
+console.log(oneAway('pale', 'bale')) // true
+console.log(oneAway('pale', 'bake')) // false
+console.log(oneAway(' pale', 'pal e')) // false
+console.log(oneAway('pale', 'paale')) // true
+console.log(oneAway('pale', 'paaale')) // false
+console.log(oneAway('pale', 'elap')) // false
+
+
+// I originally solved a different problem than the one being asked! Below is the solution for that difference problem.
+
 // This is a helper function to make a shallow copy of an object.
 function shallowCopyObj(obj) {
     let newObj = {}
@@ -62,7 +114,8 @@ function compareStringHash(strObj, str, count, difference) {
     return true
 }
 
-function oneAway(str1, str2) {
+// This version of the function checks if one string is "one away" from a permutation of the other.
+function oneAwayPermutation(str1, str2) {
     if (Math.abs(str1.length - str2.length) > 1) {
         return false
     }
@@ -81,11 +134,3 @@ function oneAway(str1, str2) {
     let difference = 0
     return compareStringHash(baseStrObjCopy, compStr, count, difference)
 }
-
-console.log(oneAway('pale', 'ple')) // true
-console.log(oneAway('pales', 'pale')) // true
-console.log(oneAway('pale', 'bale')) // true
-console.log(oneAway('pale', 'bake')) // false
-console.log(oneAway(' pale', 'pal e')) // true
-console.log(oneAway('pale', 'paale')) // true
-console.log(oneAway('pale', 'paaale')) // false
