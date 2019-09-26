@@ -38,9 +38,12 @@ function oneAway(str1, str2) {
     if (Math.abs(str1.length - str2.length) > 1) {
         return false
     }
-    let replace = existsReplacement(str1, str2)
+    let replace = false
     let insert = false
-    if (str1.length > str2.length) {
+    if (str1.length === str2.length) {
+        replace = existsReplacement(str1, str2)
+    }
+    else if (str1.length > str2.length) {
         insert = existsInsertion(str1, str2)
     }
     else if (str1.length < str2.length) {
