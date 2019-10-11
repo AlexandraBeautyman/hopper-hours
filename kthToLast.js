@@ -24,7 +24,7 @@ class List {
     }
 }
 
-// Below is a solution using recursion. It assumes there is no loop.
+// Below is an iterative solution. It assumes there is no loop.
 
 function kthToLast(head, k) {
     let count = 0
@@ -60,16 +60,71 @@ list6.addToHead(5).addToHead(4).addToHead(3).addToHead(2).addToHead(1).addToHead
 
 // Tests
 
-console.log('list6, 3', JSON.stringify(kthToLast(list6.head, 3))) // 3
-console.log('list6, 2', JSON.stringify(kthToLast(list6.head, 2))) // 4
-console.log('list6, 1', JSON.stringify(kthToLast(list6.head, 1))) // 5
-console.log('list6, 0', JSON.stringify(kthToLast(list6.head, 0))) // null
-console.log('list6, 4', JSON.stringify(kthToLast(list6.head, 4))) // 2
-console.log('list6, 5', JSON.stringify(kthToLast(list6.head, 5))) // 1
-console.log('list6, 6', JSON.stringify(kthToLast(list6.head, 6))) // 0
-console.log('list6, 7', JSON.stringify(kthToLast(list6.head, 7))) // null
+// console.log('list6, 3', JSON.stringify(kthToLast(list6.head, 3))) // 3
+// console.log('list6, 2', JSON.stringify(kthToLast(list6.head, 2))) // 4
+// console.log('list6, 1', JSON.stringify(kthToLast(list6.head, 1))) // 5
+// console.log('list6, 0', JSON.stringify(kthToLast(list6.head, 0))) // null
+// console.log('list6, 4', JSON.stringify(kthToLast(list6.head, 4))) // 2
+// console.log('list6, 5', JSON.stringify(kthToLast(list6.head, 5))) // 1
+// console.log('list6, 6', JSON.stringify(kthToLast(list6.head, 6))) // 0
+// console.log('list6, 7', JSON.stringify(kthToLast(list6.head, 7))) // null
 
-console.log('list0, 3', JSON.stringify(kthToLast(list0.head, 3))) // null
+// console.log('list0, 3', JSON.stringify(kthToLast(list0.head, 3))) // null
+// console.log('list0, 0', JSON.stringify(kthToLast(list0.head, 0))) // null
+
+// console.log('list1, 0', JSON.stringify(kthToLast(list1.head, 0))) // null
+// console.log('list1, 1', JSON.stringify(kthToLast(list1.head, 1))) // 0
+
+// console.log('list2, 3', JSON.stringify(kthToLast(list2.head, 3))) // null
+// console.log('list2, 2', JSON.stringify(kthToLast(list2.head, 2))) // 0
+
+// console.log('list3, 3', JSON.stringify(kthToLast(list3.head, 3))) // 0
+// console.log('list3, 1', JSON.stringify(kthToLast(list3.head, 1))) // 2
+
+
+// Below is a recursive approach.
+
+function findKthNode(node, k, length = 1) {
+    if (node.next === null) {
+        if (length < k) {
+            return {
+                node: null,
+                count: k
+            }
+        }
+        return {
+            node: node,
+            count: 1
+        }
+    }
+    let recurse = findKthNode(node.next, k, length + 1)
+    if (recurse.count === k) {
+        return {
+            node: recurse.node,
+            count: recurse.count
+        }
+    }
+    else {
+        return {
+            node: node,
+            count: recurse.count + 1
+        }
+    }
+}
+
+function kthToLastRecursive(node, k) {
+    let kthNodeObject = findKthNode(node, k)
+    return kthNodeObject.node
+}
+
+// console.log('list6, 3', JSON.stringify(kthToLastRecursive(list6.head, 3))) // 3
+// console.log('list6, 2', JSON.stringify(kthToLastRecursive(list6.head, 2))) // 4
+// console.log('list6, 4', JSON.stringify(kthToLastRecursive(list6.head, 4))) // 2
+// console.log('list6, 5', JSON.stringify(kthToLastRecursive(list6.head, 5))) // 1
+// console.log('list6, 6', JSON.stringify(kthToLastRecursive(list6.head, 6))) // 0
+// console.log('list6, 7', JSON.stringify(kthToLastRecursive(list6.head, 7))) // null
+
+console.log('list0, 7', JSON.stringify(kthToLastRecursive(list6.head, 7))) // null
 console.log('list0, 0', JSON.stringify(kthToLast(list0.head, 0))) // null
 
 console.log('list1, 0', JSON.stringify(kthToLast(list1.head, 0))) // null
