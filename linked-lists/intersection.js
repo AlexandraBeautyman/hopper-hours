@@ -83,7 +83,7 @@ function findIntersection2(head1, head2) {
     }
     // recursive case
     if (head1 === head2) return head1
-    return recursiveResult = findIntersection(head1.next || head1, head2.next || head2)
+    return findIntersection(head1.next || head1, head2.next || head2)
 }
 
 // console.log(findIntersection2(list0.head, list1.head)) // null
