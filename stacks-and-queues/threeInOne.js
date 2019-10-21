@@ -28,3 +28,5 @@ console.log(stacks)
 // For isEmpty, you would make sure that the top pointer is a positive integer.
 // For peeking, you would pull the item using the top pointer and accessing that index in the array.
 
+
+// Note: It turns out the prompt was asking for something different than what I wrote here. (I actually thought of what it was asking for before thinking of this, and this seemed more elegant!) But what the problem was asking for was a simple array of values that belong to different stacks. In that case, you would either allocate a fixed amount of space in the array to each stack, or you would have to write some complex functions for expanding and shrinking the allocated ranges for each stack as values as are pushed on to the stacks.
