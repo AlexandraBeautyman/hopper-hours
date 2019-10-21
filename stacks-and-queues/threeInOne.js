@@ -27,3 +27,4 @@ console.log(stacks)
 // To remove an item, you would use its next value to identify where to reassign the top pointer. Then you could reassign that index in the array to null, or honestly just leave it there.
 // For isEmpty, you would make sure that the top pointer is a positive integer.
 // For peeking, you would pull the item using the top pointer and accessing that index in the array.
+
