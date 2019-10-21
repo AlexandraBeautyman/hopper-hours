@@ -20,7 +20,6 @@ class Item {
 class Stack {
     constructor() {
         this.top = null
-        this.nextStack = null
     }
 
     push(val) {
@@ -42,58 +41,79 @@ class Stack {
 
 class SetOfStacks {
     constructor(threshold) {
-        this.topStack = null
+        this.stacks = []
         this.threshold = threshold
-        this.remainingCapacity = threshold
+        this.remainingCapacity = []
     }
 
     push(val) {
         let newTop = new Item(val)
-        if (this.remainingCapacity === 0 || this.topStack === null) {
+        if (this.stacks.length === 0 || this.remainingCapacity[this.remainingCapacity.length - 1] === 0) {
             let newStack = new Stack()
             newStack.push(newTop)
-            this.remainingCapacity = this.threshold - 1
-            newStack.nextStack = this.topStack
-            this.topStack = newStack
+            this.remainingCapacity.push(this.threshold - 1)
+            this.stacks.push(newStack)
         }
         else {
-            this.topStack.push(newTop)
-            this.remainingCapacity--
+            this.stacks[this.stacks.length - 1].push(newTop)
+            this.remainingCapacity[this.remainingCapacity.length - 1]--
         }
         return this
     }
 
     pop() {
-        if (this.topStack === null) return null
-        if (this.remainingCapacity === this.threshold && this.topStack.nextStack === null) {
-            this.topStack = null
+        if (this.stacks.length === 0) return null
+        if (this.remainingCapacity[this.remainingCapacity.length - 1] === this.threshold && this.stacks.length === 1) {
+            this.stacks = []
+            this.remainingCapacity = []
             return null
         }
-        if (this.remainingCapacity === this.threshold) {
-            this.topStack = this.topStack.nextStack
-            this.remainingCapacity = 1
-            let itemToPop = this.topStack.pop()
+        if (this.remainingCapacity[this.remainingCapacity.length - 1] === this.threshold) {
+            this.stacks.pop()
+            this.remainingCapacity.pop()
+            let itemToPop = this.stacks[this.stacks.length - 1].pop()
+            this.remainingCapacity[this.remainingCapacity.length - 1]++
             return itemToPop
         }
-        let itemToPop = this.topStack.pop()
-        this.remainingCapacity++
+        let itemToPop = this.stacks[this.stacks.length - 1].pop()
+        this.remainingCapacity[this.remainingCapacity.length - 1]++
         return itemToPop
+    }
+
+    popAt(index) {
+        if (index < 0 || index >= this.stacks.length) return null
+        let targetStack = this.stacks[index]
+        let poppedItem = targetStack.pop()
+        if (poppedItem !== null) {
+            this.remainingCapacity[index]++
+        }
+        return poppedItem
     }
 }
 
 let set = new SetOfStacks(3)
 set.push(5).push(6).push(2)
-console.log('after three', JSON.stringify(set)) // topStack: [top: 2, 6, 5; nextStack: null]; threshold: 3; remainingCapacity: 0
+console.log('after three\n', JSON.stringify(set)) // stacks: [{2, 6, 5}]; threshold: 3; remainingCapacity: [0]
 
 set.push(9).push(4)
-console.log('after five', JSON.stringify(set)) // topStack: [top: 4, 9; nextStack: 2, 6, 5]; threshold: 3; remainingCapacity: 1
+console.log('\nafter five\n', JSON.stringify(set)) // stacks: [{2, 6, 5}, {4, 9}]; threshold: 3; remainingCapacity: [0, 1]
 
 set.pop()
 set.pop()
-console.log('popped two of five', JSON.stringify(set)) // topStack: [top: null; nextStack: 2, 6, 5]; threshold: 3; remainingCapacity: 3
+console.log('\npopped two of five\n', JSON.stringify(set)) // stacks: [{2, 6, 5}, {}]; threshold: 3; remainingCapacity: [0, 3]
 
 set.pop()
-console.log('popped again', JSON.stringify(set)) // topStack: [top: 6, 5; nextStack: null]; threshold: 3; remainingCapacity: 1
+console.log('\npopped again\n', JSON.stringify(set)) // stacks: [{6, 5}]; threshold: 3; remainingCapacity: [1]
 
 set.push(10).push(15)
-console.log('pushed again', JSON.stringify(set)) // topStack: [top: 15; nextStack: 10, 6, 5]; threshold: 3; remainingCapacity: 2
+console.log('\npushed again\n', JSON.stringify(set)) // stacks: [{10, 6, 5}, {15}]; threshold: 3; remainingCapacity: [0, 2]
+
+console.log('\npopped val\n', set.popAt(0)) // 10
+console.log('\nset\n', JSON.stringify(set)) // stacks: [{6, 5}, {15}]; threshold: 3; remainingCapacity: [1, 2]
+
+set.pop()
+set.pop()
+console.log('\ntwo more pops\n', JSON.stringify(set)) // stacks: [{5}]; threshold: 3; remainingCapacity: [2]
+
+set.push(4).push(8).push(7).push(57).push(24).push(17)
+console.log('\nmore pushes\n', JSON.stringify(set)) // stacks: [{8, 4, 5}, {24, 57, 7}, {17}]; threshold: 3; remainingCapacity: [0, 0, 2]
