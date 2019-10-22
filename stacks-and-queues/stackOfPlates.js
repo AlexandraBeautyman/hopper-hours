@@ -47,15 +47,14 @@ class SetOfStacks {
     }
 
     push(val) {
-        let newTop = new Item(val)
         if (this.stacks.length === 0 || this.remainingCapacity[this.remainingCapacity.length - 1] === 0) {
             let newStack = new Stack()
-            newStack.push(newTop)
+            newStack.push(val)
             this.remainingCapacity.push(this.threshold - 1)
             this.stacks.push(newStack)
         }
         else {
-            this.stacks[this.stacks.length - 1].push(newTop)
+            this.stacks[this.stacks.length - 1].push(val)
             this.remainingCapacity[this.remainingCapacity.length - 1]--
         }
         return this
