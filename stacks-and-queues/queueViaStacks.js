@@ -71,6 +71,14 @@ class MyQueue {
         if (this.frontStack.isEmpty()) this.reverse()
         return this.frontStack.pop()
     }
+
+    peek() {
+        if (!this.frontStack.isEmpty()) return this.frontStack.head
+        if (this.backStack.isEmpty()) return null
+        console.log('got here')
+        this.reverse()
+        return this.frontStack.head
+    }
 }
 
 // Tests
@@ -89,3 +97,4 @@ queue.pop()
 console.log('\nall popped away\n', JSON.stringify(queue)) // frontStack: null; backStack: null
 queue.push(49)
 console.log('\npushed one more\n', JSON.stringify(queue)) // frontStack: null; backStack: 49
+console.log('\npeek\n', queue.peek())
