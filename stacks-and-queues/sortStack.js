@@ -91,8 +91,55 @@ function sortStack(stack) {
     return newStack
 }
 
-console.log('\nstack6 sorted\n', JSON.stringify(sortStack(stack6)))
-console.log('\nstack3 sorted\n', JSON.stringify(sortStack(stack3)))
-console.log('\nstack2 sorted\n', JSON.stringify(sortStack(stack2)))
-console.log('\nstack1 sorted\n', JSON.stringify(sortStack(stack1)))
-console.log('\nstack0 sorted\n', JSON.stringify(sortStack(stack0)))
+// console.log('\nstack6 sorted\n', JSON.stringify(sortStack(stack6)))
+// console.log('\nstack3 sorted\n', JSON.stringify(sortStack(stack3)))
+// console.log('\nstack2 sorted\n', JSON.stringify(sortStack(stack2)))
+// console.log('\nstack1 sorted\n', JSON.stringify(sortStack(stack1)))
+// console.log('\nstack0 sorted\n', JSON.stringify(sortStack(stack0)))
+
+
+// The below function uses the quick sort method to sort the stack.
+
+function quickSortStack(stack) {
+    // base case is when the stack is empty or only has one item
+    if (stack.head === null || stack.head.next === null) {
+        return stack
+    }
+    // in the recursive case, we break apart the smaller and larger values
+    let pivot = stack.head
+    let currentItem = stack.head
+    let smaller = new Stack()
+    let larger = new Stack()
+    while (currentItem.next !== null) {
+        if (currentItem.next.value >= pivot.value) {
+            larger.push(currentItem.next.value)
+        }
+        else {
+            smaller.push(currentItem.next.value)
+        }
+        currentItem = currentItem.next
+    }
+    let sortedSmaller = quickSortStack(smaller)
+    let sortedLarger = quickSortStack(larger)
+    sortedLarger.push(pivot.value)
+    let currentSmallItem = sortedSmaller.head
+    while (currentSmallItem !== null && currentSmallItem.next !== null) {
+        currentSmallItem = currentSmallItem.next
+    }
+    if (currentSmallItem === null) {
+        sortedSmaller.head = sortedLarger.head
+    }
+    else {
+        currentSmallItem.next = sortedLarger.head
+    }
+    return sortedSmaller
+}
+
+// console.log('\nstack6 sorted\n', JSON.stringify(quickSortStack(stack6)))
+// console.log('\nstack3 sorted\n', JSON.stringify(quickSortStack(stack3)))
+// console.log('\nstack2 sorted\n', JSON.stringify(quickSortStack(stack2)))
+// console.log('\nstack1 sorted\n', JSON.stringify(quickSortStack(stack1)))
+// console.log('\nstack0 sorted\n', JSON.stringify(quickSortStack(stack0)))
+
+
+// The below function uses the merge sort method. I considered writing an adapted version of the merge sort function for stacks, but merging two sorted stacks together is significantly less simple of a process than merging two sorted arrays.
