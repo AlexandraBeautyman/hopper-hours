@@ -141,5 +141,44 @@ function quickSortStack(stack) {
 // console.log('\nstack1 sorted\n', JSON.stringify(quickSortStack(stack1)))
 // console.log('\nstack0 sorted\n', JSON.stringify(quickSortStack(stack0)))
 
+// I considered writing an adapted version of the merge sort function for stacks, but merging two sorted stacks together is significantly less simple of a process than merging two sorted arrays.
 
-// The below function uses the merge sort method. I considered writing an adapted version of the merge sort function for stacks, but merging two sorted stacks together is significantly less simple of a process than merging two sorted arrays.
+// Here is another quick sort implementation. This one only uses one extra stack per call, to be more in line with the prompt.
+
+function qSortStack(stack) {
+    if (stack === null || stack.isEmpty() || stack.head.next === null) return stack
+    // pull out the pivot into a variable, pull out the smaller values into their own stack, and use the original stack as the "larger" stack
+    let pivot = stack.head
+    let smaller = new Stack()
+    let currentNode = stack.head
+    while (currentNode.next !== null) {
+        if (currentNode.next.value < pivot.value) {
+            smaller.push(currentNode.next.value)
+            currentNode.next = currentNode.next.next
+        }
+        else {
+            currentNode = currentNode.next
+        }
+    }
+    stack.pop()
+    let sortedLarger = qSortStack(stack)
+    let sortedSmaller = qSortStack(smaller)
+    sortedLarger.push(pivot.value)
+    if (sortedSmaller.isEmpty()) {
+        sortedSmaller.head = sortedLarger.head
+    }
+    else {
+        let lastSmall = sortedSmaller.head
+        while (lastSmall.next !== null) {
+            lastSmall = lastSmall.next
+        }
+        lastSmall.next = sortedLarger.head
+    }
+    return sortedSmaller
+}
+
+console.log('\nstack6 sorted\n', JSON.stringify(qSortStack(stack6))) // 21, 2, 8, 15, 3, 7  =>  2, 3, 7, 8, 15, 21
+console.log('\nstack3 sorted\n', JSON.stringify(qSortStack(stack3))) // 1, 8, 13
+console.log('\nstack2 sorted\n', JSON.stringify(qSortStack(stack2))) // 4, 6
+console.log('\nstack1 sorted\n', JSON.stringify(qSortStack(stack1))) // 10
+console.log('\nstack0 sorted\n', JSON.stringify(qSortStack(stack0))) // null
