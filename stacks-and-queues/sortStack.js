@@ -161,8 +161,10 @@ function qSortStack(stack) {
         }
     }
     stack.pop()
+    // sort the smaller and the larger stacks
     let sortedLarger = qSortStack(stack)
     let sortedSmaller = qSortStack(smaller)
+    // put everyone back together again
     sortedLarger.push(pivot.value)
     if (sortedSmaller.isEmpty()) {
         sortedSmaller.head = sortedLarger.head
