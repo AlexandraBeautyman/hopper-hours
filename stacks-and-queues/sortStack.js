@@ -179,8 +179,32 @@ function qSortStack(stack) {
     return sortedSmaller
 }
 
-console.log('\nstack6 sorted\n', JSON.stringify(qSortStack(stack6))) // 21, 2, 8, 15, 3, 7  =>  2, 3, 7, 8, 15, 21
-console.log('\nstack3 sorted\n', JSON.stringify(qSortStack(stack3))) // 1, 8, 13
-console.log('\nstack2 sorted\n', JSON.stringify(qSortStack(stack2))) // 4, 6
-console.log('\nstack1 sorted\n', JSON.stringify(qSortStack(stack1))) // 10
-console.log('\nstack0 sorted\n', JSON.stringify(qSortStack(stack0))) // null
+// console.log('\nstack6 sorted\n', JSON.stringify(qSortStack(stack6))) // 21, 2, 8, 15, 3, 7  =>  2, 3, 7, 8, 15, 21
+// console.log('\nstack3 sorted\n', JSON.stringify(qSortStack(stack3))) // 1, 8, 13
+// console.log('\nstack2 sorted\n', JSON.stringify(qSortStack(stack2))) // 4, 6
+// console.log('\nstack1 sorted\n', JSON.stringify(qSortStack(stack1))) // 10
+// console.log('\nstack0 sorted\n', JSON.stringify(qSortStack(stack0))) // null
+
+
+// After implementing the above quick sort method on a stack, I learned that when this prompt says you can use an additional temporary stack, it means that you can't use an additional temporary stack per recursive call, which is what I was doing. Below is my version of the (slow) implementation that only uses one additional temporary stack total.
+
+function slowSort(stack) {
+    let tempStack = new Stack()
+    while (!stack.isEmpty()) {
+        let currentVal = stack.pop()
+        while (!tempStack.isEmpty() && tempStack.head.value > currentVal.value) {
+            stack.push(tempStack.pop().value)
+        }
+        tempStack.push(currentVal.value)
+    }
+    while (!tempStack.isEmpty()) {
+        stack.push(tempStack.pop().value)
+    }
+    return stack
+}
+
+console.log('\nstack6 sorted\n', JSON.stringify(slowSort(stack6))) // 21, 2, 8, 15, 3, 7  =>  2, 3, 7, 8, 15, 21
+console.log('\nstack3 sorted\n', JSON.stringify(slowSort(stack3))) // 1, 8, 13
+console.log('\nstack2 sorted\n', JSON.stringify(slowSort(stack2))) // 4, 6
+console.log('\nstack1 sorted\n', JSON.stringify(slowSort(stack1))) // 10
+console.log('\nstack0 sorted\n', JSON.stringify(slowSort(stack0))) // null
