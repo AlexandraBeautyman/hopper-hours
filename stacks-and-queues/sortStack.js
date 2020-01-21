@@ -186,7 +186,7 @@ function qSortStack(stack) {
 // console.log('\nstack0 sorted\n', JSON.stringify(qSortStack(stack0))) // null
 
 
-// After implementing the above quick sort method on a stack, I learned that when this prompt says you can use an additional temporary stack, it means that you can't use an additional temporary stack per recursive call, which is what I was doing. Below is my version of the (slow) implementation that only uses one additional temporary stack total.
+// After implementing the above quick sort method on a stack, I learned that when this prompt says you can use an additional temporary stack, it does NOT mean you can use an additional temporary stack per recursive call, which is what I was doing. Below is my version of the (slower) implementation that only uses one additional temporary stack total.
 
 function slowSort(stack) {
     let tempStack = new Stack()
@@ -208,3 +208,43 @@ console.log('\nstack3 sorted\n', JSON.stringify(slowSort(stack3))) // 1, 8, 13
 console.log('\nstack2 sorted\n', JSON.stringify(slowSort(stack2))) // 4, 6
 console.log('\nstack1 sorted\n', JSON.stringify(slowSort(stack1))) // 10
 console.log('\nstack0 sorted\n', JSON.stringify(slowSort(stack0))) // null
+
+
+// Below is a description in words of one way to implement this problem:
+
+// Step -1: If original stack is null, return null. If it's empty, return it. Else call a helper function with original stack and newly created additional stack.
+// Step 0: If the original stack is empty, return the additional stack.
+// Step 1: Grab the top element from the original stack and store it in a variable
+// Step 2: peek at the additional stack.
+// Step 3: If the element at the top is null or its value is larger than that of the stored element, push the stored element on to the additional stack. Then go back to step zero.
+// Step 4: If the value at the top of the additional stack is smaller than that of the stored element, pop the additional stack and push the result on to the original stack. Then go back to step three.
+
+
+// Below, the main and helper functions implement the verbal description above:
+
+function helperSort(originalStack, additionalStack) {
+    // base case
+    if (originalStack.isEmpty()) return additionalStack
+    // recursive case
+    let currentElement = originalStack.pop()
+    let additionalTop = additionalStack.peek()
+    while (additionalTop !== null && additionalTop.value < currentElement.value) {
+        originalStack.push(additionalStack.pop().value)
+        additionalTop = additionalStack.peek()
+    }
+    additionalStack.push(currentElement.value)
+    return helperSort(originalStack, additionalStack)
+}
+
+function mainSort(stackToSort) {
+    if (stackToSort === null) return null
+    if (stackToSort.isEmpty()) return stackToSort
+    let helperStack = new Stack()
+    return helperSort(stackToSort, helperStack)
+}
+
+// console.log('\nstack6 sorted\n', JSON.stringify(mainSort(stack6))) // 21, 2, 8, 15, 3, 7  =>  2, 3, 7, 8, 15, 21
+// console.log('\nstack3 sorted\n', JSON.stringify(mainSort(stack3))) // 1, 8, 13
+// console.log('\nstack2 sorted\n', JSON.stringify(mainSort(stack2))) // 4, 6
+// console.log('\nstack1 sorted\n', JSON.stringify(mainSort(stack1))) // 10
+// console.log('\nstack0 sorted\n', JSON.stringify(mainSort(stack0))) // null
