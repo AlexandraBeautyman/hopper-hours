@@ -191,11 +191,11 @@ function qSortStack(stack) {
 function slowSort(stack) {
     let tempStack = new Stack()
     while (!stack.isEmpty()) {
-        let currentVal = stack.pop()
-        while (!tempStack.isEmpty() && tempStack.head.value > currentVal.value) {
+        let currentVal = stack.pop().value
+        while (!tempStack.isEmpty() && tempStack.head.value > currentVal) {
             stack.push(tempStack.pop().value)
         }
-        tempStack.push(currentVal.value)
+        tempStack.push(currentVal)
     }
     while (!tempStack.isEmpty()) {
         stack.push(tempStack.pop().value)
